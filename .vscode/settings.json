@@ -1,0 +1,18 @@
+{
+    "cppcheck.standard": [
+        "c99",
+        "c++11"
+    ],
+    "cppcheck.hideProgressMessages": true,
+    "clang-format.style": "aaaaa",
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "thread": "cpp",
+        "typeinfo": "cpp",
+        "fetchdevinfo.h": "c",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "*.tcc": "cpp"
+    }
+}
