@@ -91,6 +91,7 @@ answer_to_connection(void *cls, struct MHD_Connection *connection,
         memcpy(post->buffer + post->len, upload_data, *upload_data_size);
         post->len = post->len + *upload_data_size;
         post->buffer[post->len] = '\0';
+        printf("buffer = %s\n", post->buffer);
         struct json_object *root = json_tokener_parse(post->buffer);
         if (root)
         {
