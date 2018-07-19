@@ -13,6 +13,7 @@
         "ratio": "cpp",
         "system_error": "cpp",
         "type_traits": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "string.h": "c"
     }
 }
