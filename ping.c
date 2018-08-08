@@ -138,8 +138,8 @@ int main(int argc, char **argv)
     }
     if (argc < 2 || (argc == 2 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)))
     {
-        printf("Usage:\n./curl_poster [URL] [payloadSize (bytes)]\n");
-        printf("./curl_poster localhost:8888/hello 256\n");
+        printf("Usage:\n./ping [URL] [payloadSize (bytes)]\n");
+        printf("./ping localhost:8888/hello 256\n");
         exit(0);
     }
 
@@ -182,6 +182,9 @@ int main(int argc, char **argv)
     ExampleTimeStats roundTrip;
     exampleInitTimeStats(&roundTrip);
 
+    ExampleTimeStats roundTripOverall;
+    exampleInitTimeStats(&roundTripOverall);
+
     struct timeval startTime;
     gettimeofday(&startTime, NULL);
 
@@ -195,9 +198,12 @@ int main(int argc, char **argv)
 
         gettimeofday(&preTakeTime, NULL);
         CURLcode res = curl_easy_perform(session);
+        //printf("===%s\n", s.ptr);
         gettimeofday(&postTakeTime, NULL);
         unsigned long difference = 1000000 * (postTakeTime.tv_sec - preTakeTime.tv_sec) + (postTakeTime.tv_usec - preTakeTime.tv_usec);
+
         roundTrip = *exampleAddTimingToTimeStats(&roundTrip, difference);
+        roundTripOverall = *exampleAddTimingToTimeStats(&roundTripOverall, difference);
 
         difference = 1000000 * (postTakeTime.tv_sec - startTime.tv_sec) + (postTakeTime.tv_usec - startTime.tv_usec);
         if (difference > 1000000)
@@ -232,7 +238,10 @@ int main(int argc, char **argv)
 
     sigaction(SIGINT, &oldAction, 0);
 
+    printf("\n# Overall %9lu %8.0f %8" PRIi64 "\n", roundTripOverall.count, exampleGetMedianFromTimeStats(&roundTripOverall), roundTripOverall.min);
+
     exampleDeleteTimeStats(&roundTrip);
+    exampleDeleteTimeStats(&roundTripOverall);
     curl_easy_cleanup(session);
     printf("clean up\n");
     return 0;
